@@ -1,0 +1,2 @@
+monolog:
+  logfile: '../var/logs/'

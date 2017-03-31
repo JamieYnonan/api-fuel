@@ -1,0 +1,30 @@
+Fuel\Domain\Model\User\User:
+  type: entity
+  table: users
+  repositoryClass: Fuel\Infrastructure\Domain\Model\User\DoctrineUserRepository
+  id:
+    id:
+      column: id
+      type: integer
+      generator:
+        strategy: AUTO
+  fields:
+    email:
+      type: string
+      unique: true
+    name:
+      type: string
+      length: 45
+    lastName:
+      type: string
+      column: last_name
+      length: 45
+    password:
+      type: string
+    updatedAt:
+      type: datetime
+      column: updated_at
+    createdAt:
+      type: datetime
+      column: created_at
+
