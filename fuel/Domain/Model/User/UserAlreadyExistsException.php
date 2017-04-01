@@ -1,23 +1,23 @@
 <?php
 namespace Fuel\Domain\Model\User;
-use Throwable;
+
+use Fuel\Application\Service\Response\AbstractResponseException;
 
 /**
  * Class UserAlreadyExistsException
  * @package Fuel\Domain\Model\User
  */
-class UserAlreadyExistsException extends \Exception
+class UserAlreadyExistsException extends AbstractResponseException
 {
+    /**
+     * UserAlreadyExistsException constructor.
+     * @param string $email
+     */
     public function __construct(string $email)
     {
         parent::__construct(
             sprintf('El correo %s ya se encuentra registrado.', $email),
             110
         );
-    }
-
-    public function __invoke()
-    {
-        return ['message' => $this->getMessage(), 'code' => $this->getCode()];
     }
 }

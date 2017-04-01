@@ -30,21 +30,19 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
     }
 
     /**
-     * @param int $id
-     * @param string $email
-     * @return User
-     */
-    public function byJwt(int $id, string $email): User
-    {
-        return $this->findOneBy(['id' => $id, 'email' => $email]);
-    }
-
-    /**
      * @param User $user
      */
     public function add(User $user)
     {
         $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function update(User $user)
+    {
         $this->getEntityManager()->flush();
     }
 }

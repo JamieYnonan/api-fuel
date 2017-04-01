@@ -2,15 +2,15 @@
 namespace Fuel\Application\Service\User;
 
 /**
- * Class SingUpUserRequest
+ * Class UpdateUserRequest
  * @package Fuel\Application\Service\User
  */
-class SingUpUserRequest
+class UpdateUserRequest
 {
     /**
-     * @var string
+     * @var int
      */
-    private $email;
+    private $id;
 
     /**
      * @var string
@@ -23,35 +23,24 @@ class SingUpUserRequest
     private $lastName;
 
     /**
-     * @var string
-     */
-    private $password;
-
-    /**
-     * SingUpUserRequest constructor.
-     * @param string $email
+     * UpdateUserRequest constructor.
+     * @param int $id
      * @param string $name
      * @param string $lastName
-     * @param string $password
      */
     public function __construct(
-        string $email,
+        int $id,
         string $name,
-        string $lastName,
-        string $password
+        string $lastName
     ) {
-        $this->email = $email;
+        $this->id = $id;
         $this->name = $name;
         $this->lastName = $lastName;
-        $this->password = $password;
     }
 
-    /**
-     * @return string
-     */
-    public function email(): string
+    public function id(): int
     {
-        return $this->email;
+        return $this->id;
     }
 
     /**
@@ -68,13 +57,5 @@ class SingUpUserRequest
     public function lastName(): string
     {
         return $this->lastName;
-    }
-
-    /**
-     * @return string
-     */
-    public function password(): string
-    {
-        return $this->password;
     }
 }

@@ -14,7 +14,7 @@ class SingUpUserService
         $this->userRepository = $userRepository;
     }
 
-    public function execute($request)
+    public function execute(SingUpUserRequest $request): User
     {
         $user = $this->userRepository->byEmail($request->email());
         if ($user !== null) {

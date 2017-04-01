@@ -1,7 +1,7 @@
 <?php
 namespace Fuel\Domain\Model\User;
 
-use Assert\Assertion;
+use Assert\{Assertion, InvalidArgumentException};
 
 /**
  * Class User
@@ -64,7 +64,7 @@ class User
         $this->setEmail($email);
         $this->setName($name);
         $this->setLastName($lastName);
-        $this->setPassword($password);
+        $this->changePassword($password);
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }
@@ -82,7 +82,7 @@ class User
     /**
      * @param string $name
      */
-    protected function setName(string $name)
+    public function setName(string $name)
     {
         $this->name = $this->assertNameOrLastName($name);
     }
@@ -90,7 +90,7 @@ class User
     /**
      * @param string $lastName
      */
-    protected function setLastName(string $lastName)
+    public function setLastName(string $lastName)
     {
 
         $this->lastName = $this->assertNameOrLastName($lastName);
@@ -99,6 +99,7 @@ class User
     /**
      * @param string $name
      * @return string
+     * @throws InvalidArgumentException
      */
     private function assertNameOrLastName(string $name)
     {
@@ -114,13 +115,18 @@ class User
 
     /**
      * @param string $password
+     * @throws UserChangeEqualsNewPassword
+     * @throws InvalidArgumentException
      */
-    protected function setPassword(string $password)
+    public function changePassword(string $password)
     {
         $password = trim($password);
         Assertion::minLength($password, static::MIN_LENGTH_PASSWORD);
+        if (password_verify($password, $this->password)) {
+            throw new UserChangeEqualsNewPassword();
+        }
 
-        $this->password = $password;
+        $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
     /**
