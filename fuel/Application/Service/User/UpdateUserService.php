@@ -1,9 +1,10 @@
 <?php
 namespace Fuel\Application\Service\User;
 
-use function Assert\thatNullOr;
-use Fuel\Domain\Model\User\UserRepositoryInterface;
-use Fuel\Domain\Model\User\UserUpdateWithPreviousValues;
+use Fuel\Domain\Model\User\{
+    UserRepositoryInterface,
+    UserUpdateWithPreviousValuesException
+};
 
 /**
  * Class UpdateUserService
@@ -27,15 +28,15 @@ class UpdateUserService
 
     /**
      * @param UpdateUserRequest $request
-     * @return \Fuel\Domain\Model\User\User
-     * @throws UserUpdateWithPreviousValues
+     * @throws UserUpdateWithPreviousValuesException
+     * @return array
      */
-    public function execute(UpdateUserRequest $request)
+    public function execute(UpdateUserRequest $request): array
     {
         $user = $this->userRepository->byId($request->id());
 
         if ($user->name() === $request->name() && $user->lastName() === $user->lastName()) {
-            throw new UserUpdateWithPreviousValues();
+            throw new UserUpdateWithPreviousValuesException();
         }
 
         $user->setName($request->name());
@@ -43,6 +44,6 @@ class UpdateUserService
 
         $this->userRepository->update($user);
 
-        return $user;
+        return ['message' => 'Los datos fueron actualizados.'];
     }
 }

@@ -2,8 +2,10 @@
 namespace Fuel\Application\Service\User;
 
 use Assert\Assertion;
-use Fuel\Domain\Model\User\User;
-use Fuel\Domain\Model\User\UserRepositoryInterface;
+use Fuel\Domain\Model\User\{
+    OldPasswordNotEqualToAcutalException,
+    UserRepositoryInterface
+};
 
 /**
  * Class ChangePasswordUserService
@@ -25,9 +27,13 @@ class ChangePasswordUserService
         $this->userRepository = $userRepository;
     }
 
-    public function execute(ChangePasswordUserRequest $request): User
+    public function execute(ChangePasswordUserRequest $request): array
     {
         $user = $this->userRepository->byId($request->id());
+
+        if (!$user->equalPassword($request->oldPassword())) {
+            throw new OldPasswordNotEqualToAcutalException();
+        }
 
         Assertion::same(
             $request->newPassword(),
@@ -37,6 +43,8 @@ class ChangePasswordUserService
 
         $user->changePassword($request->newPassword());
 
-        return $user;
+        $this->userRepository->update($user);
+
+        return ['La contraseña se cambio correctamente!'];
     }
 }

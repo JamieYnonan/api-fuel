@@ -1,12 +1,16 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-use Fuel\Application\Service\User\SingUpUserRequest;
-use Fuel\Application\Service\Response\ResponseCustomException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Fuel\Application\Service\Response\ResponseGeneralException;
-use Fuel\Application\Service\User\UpdateUserRequest;
-use Fuel\Application\Service\User\ChangePasswordUserRequest;
+use Symfony\Component\HttpFoundation\{Request, JsonResponse};
+use Fuel\Application\Service\Response\{
+    ResponseCustomException,
+    ResponseGeneralException
+};
+use Fuel\Application\Service\User\{
+    SingUpUserRequest,
+    UpdateUserRequest,
+    ChangePasswordUserRequest
+};
+
 
 $app->post('users', function (Request $request) use ($app) {
     try {
@@ -29,10 +33,13 @@ $app->post('users', function (Request $request) use ($app) {
 
 $app->put('users', function (Request $request) use ($app) {
     try {
+        $data = $app['validation_token']->validate(
+            $request->headers->get('token')
+        );
 
         $response = $app['update_user_application_service']->execute(
             new UpdateUserRequest(
-                $request->get('id'),
+                $data->id,
                 $request->get('name'),
                 $request->get('last_name')
             )
@@ -48,10 +55,14 @@ $app->put('users', function (Request $request) use ($app) {
 
 $app->put('users/password', function (Request $request) use ($app) {
     try {
+        $data = $app['validation_token']->validate(
+            $request->headers->get('token')
+        );
+
         $response = $app['change_password_user_application_service']->execute(
             new ChangePasswordUserRequest(
-                $request->get('id'),
-                $request->get('password'),
+                $data->id,
+                $request->get('old_password'),
                 $request->get('new_password'),
                 $request->get('repeat_password')
             )

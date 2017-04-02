@@ -4,19 +4,19 @@ namespace Fuel\Domain\Model\User;
 use Fuel\Application\Service\Response\AbstractResponseException;
 
 /**
- * Class UserUpdateWithPreviousValues
+ * Class InvalidTokenException
  * @package Fuel\Domain\Model\User
  */
-class UserUpdateWithPreviousValues extends AbstractResponseException
+class InvalidTokenException extends AbstractResponseException
 {
     /**
-     * UserUpdateWithPreviousValues constructor.
+     * InvalidTokenException constructor.
      */
     public function __construct()
     {
         parent::__construct(
-            sprintf('Los datos a actualizar son los mismo que los actuales.'),
-            120
+            'El token es invalido.',
+            150
         );
     }
 }

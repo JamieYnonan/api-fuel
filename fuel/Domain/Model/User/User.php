@@ -75,7 +75,7 @@ class User
     protected function setEmail(string $email)
     {
         $email = trim($email);
-        Assertion::email($email);
+        Assertion::email($email, sprintf('El correo %s no es valido.', $email));
         $this->email = $email;
     }
 
@@ -84,7 +84,7 @@ class User
      */
     public function setName(string $name)
     {
-        $this->name = $this->assertNameOrLastName($name);
+        $this->name = $this->assertNameOrLastName($name, 'nombre');
     }
 
     /**
@@ -92,8 +92,7 @@ class User
      */
     public function setLastName(string $lastName)
     {
-
-        $this->lastName = $this->assertNameOrLastName($lastName);
+        $this->lastName = $this->assertNameOrLastName($lastName, 'apellido');
     }
 
     /**
@@ -101,13 +100,19 @@ class User
      * @return string
      * @throws InvalidArgumentException
      */
-    private function assertNameOrLastName(string $name)
+    private function assertNameOrLastName(string $name, string $type): string
     {
         $name = trim($name);
         Assertion::betweenLength(
             $name,
             static::MIN_LENGTH_NAME_LN,
-            static::MAX_LENGTH_NAME_LN
+            static::MAX_LENGTH_NAME_LN,
+            sprintf(
+                'El %s debe tener minimo %d y maximo %d caracteres',
+                $type,
+                static::MIN_LENGTH_NAME_LN,
+                static::MAX_LENGTH_NAME_LN
+            )
         );
 
         return $name;
@@ -115,24 +120,36 @@ class User
 
     /**
      * @param string $password
-     * @throws UserChangeEqualsNewPassword
+     * @throws ChangeEqualsNewPasswordException
      * @throws InvalidArgumentException
      */
     public function changePassword(string $password)
     {
         $password = trim($password);
-        Assertion::minLength($password, static::MIN_LENGTH_PASSWORD);
+        Assertion::minLength(
+            $password,
+            static::MIN_LENGTH_PASSWORD,
+            sprintf(
+                'La password debe tener minimo %d caracteres.',
+                static::MIN_LENGTH_PASSWORD
+            )
+        );
         if (password_verify($password, $this->password)) {
-            throw new UserChangeEqualsNewPassword();
+            throw new ChangeEqualsNewPasswordException();
         }
 
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
+    public function equalPassword(string $password): bool
+    {
+        return password_verify($password, $this->password());
+    }
+
     /**
      * @return int
      */
-    public function id()
+    public function id(): int
     {
         return $this->id;
     }
@@ -140,7 +157,7 @@ class User
     /**
      * @return string
      */
-    public function email()
+    public function email(): string
     {
         return $this->email;
     }
@@ -148,7 +165,7 @@ class User
     /**
      * @return string
      */
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }
@@ -156,8 +173,16 @@ class User
     /**
      * @return string
      */
-    public function lastName()
+    public function lastName(): string
     {
         return $this->lastName;
+    }
+
+    /**
+     * @return string
+     */
+    public function password(): string
+    {
+        return $this->password;
     }
 }

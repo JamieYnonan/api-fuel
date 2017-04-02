@@ -15,7 +15,7 @@ class ChangePasswordUserRequest
     /**
      * @var string
      */
-    private $password;
+    private $oldPassword;
 
     /**
      * @var string
@@ -30,17 +30,18 @@ class ChangePasswordUserRequest
     /**
      * UpdatePasswordUserRequest constructor.
      * @param int $id
-     * @param string $password
+     * @param string $oldPassword
      * @param string $newPassword
      * @param string $repeatNewPassword
      */
-    public function __construct(int $id,
-        string $password,
+    public function __construct(
+        int $id,
+        string $oldPassword,
         string $newPassword,
         string $repeatNewPassword
     ) {
         $this->id = $id;
-        $this->password = $password;
+        $this->oldPassword = $oldPassword;
         $this->newPassword = $newPassword;
         $this->repeatNewPassword = $repeatNewPassword;
     }
@@ -56,9 +57,9 @@ class ChangePasswordUserRequest
     /**
      * @return string
      */
-    public function password(): string
+    public function oldPassword(): string
     {
-        return $this->password;
+        return $this->oldPassword;
     }
 
     /**
