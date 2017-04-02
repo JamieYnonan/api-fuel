@@ -4,7 +4,7 @@ namespace Fuel\Domain\Model\User;
 use Fuel\Application\Service\Response\AbstractResponseException;
 use Throwable;
 
-class UserChangeEqualsNewPassword extends AbstractResponseException
+class ChangeEqualsNewPasswordException extends AbstractResponseException
 {
     public function __construct()
     {

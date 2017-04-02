@@ -25,6 +25,10 @@ $app->register(
     Yaml::parse(file_get_contents($dirConfig . 'database.yml'))
 );
 
+$app['config'] = function () use ($dirConfig) {
+    return Yaml::parse(file_get_contents($dirConfig . 'config.yml'));
+};
+
 $app['em'] = function ($app) {
     return (new EntityManagerFactory)->build($app['db']);
 };
@@ -34,7 +38,10 @@ $app['user_repository'] = function ($app) {
 };
 
 $app['sign_up_user_application_service'] = function ($app) {
-    return new SingUpUserService($app['user_repository']);
+    return new SingUpUserService(
+        $app['user_repository'],
+        $app['config']['config']['tokenKey']
+    );
 };
 
 $app['update_user_application_service'] = function ($app) {

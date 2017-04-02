@@ -4,13 +4,13 @@ namespace Fuel\Domain\Model\User;
 use Fuel\Application\Service\Response\AbstractResponseException;
 
 /**
- * Class UserUpdateWithPreviousValues
+ * Class UserUpdateWithPreviousValuesException
  * @package Fuel\Domain\Model\User
  */
-class UserUpdateWithPreviousValues extends AbstractResponseException
+class UserUpdateWithPreviousValuesException extends AbstractResponseException
 {
     /**
-     * UserUpdateWithPreviousValues constructor.
+     * UserUpdateWithPreviousValuesException constructor.
      */
     public function __construct()
     {

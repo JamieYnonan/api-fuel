@@ -51,7 +51,7 @@ $app->put('users/password', function (Request $request) use ($app) {
         $response = $app['change_password_user_application_service']->execute(
             new ChangePasswordUserRequest(
                 $request->get('id'),
-                $request->get('password'),
+                $request->get('old_password'),
                 $request->get('new_password'),
                 $request->get('repeat_password')
             )

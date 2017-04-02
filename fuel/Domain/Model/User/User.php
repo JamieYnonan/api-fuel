@@ -101,7 +101,7 @@ class User
      * @return string
      * @throws InvalidArgumentException
      */
-    private function assertNameOrLastName(string $name)
+    private function assertNameOrLastName(string $name): string
     {
         $name = trim($name);
         Assertion::betweenLength(
@@ -115,7 +115,7 @@ class User
 
     /**
      * @param string $password
-     * @throws UserChangeEqualsNewPassword
+     * @throws ChangeEqualsNewPasswordException
      * @throws InvalidArgumentException
      */
     public function changePassword(string $password)
@@ -123,16 +123,21 @@ class User
         $password = trim($password);
         Assertion::minLength($password, static::MIN_LENGTH_PASSWORD);
         if (password_verify($password, $this->password)) {
-            throw new UserChangeEqualsNewPassword();
+            throw new ChangeEqualsNewPasswordException();
         }
 
         $this->password = password_hash($password, PASSWORD_DEFAULT);
     }
 
+    public function equalPassword(string $password): bool
+    {
+        return password_verify($password, $this->password());
+    }
+
     /**
      * @return int
      */
-    public function id()
+    public function id(): int
     {
         return $this->id;
     }
@@ -140,7 +145,7 @@ class User
     /**
      * @return string
      */
-    public function email()
+    public function email(): string
     {
         return $this->email;
     }
@@ -148,7 +153,7 @@ class User
     /**
      * @return string
      */
-    public function name()
+    public function name(): string
     {
         return $this->name;
     }
@@ -156,8 +161,13 @@ class User
     /**
      * @return string
      */
-    public function lastName()
+    public function lastName(): string
     {
         return $this->lastName;
+    }
+
+    public function password(): string
+    {
+        return $this->password;
     }
 }
