@@ -77,7 +77,7 @@ $app->get('/users/{id}', function (Request $request, int $id) use ($app) {
     }
 });
 
-$app->put('/users/password', function (Request $request) use ($app) {
+$app->put('/users/{id}/password', function (Request $request, int $id) use ($app) {
     try {
         $data = $app['validation_token']->validate(
             $request->headers->get('token')
@@ -85,7 +85,7 @@ $app->put('/users/password', function (Request $request) use ($app) {
 
         $response = $app['change_password_user_application_service']->execute(
             new ChangePasswordUserRequest(
-                $data->id,
+                $id,
                 $request->get('old_password'),
                 $request->get('new_password'),
                 $request->get('repeat_password')
