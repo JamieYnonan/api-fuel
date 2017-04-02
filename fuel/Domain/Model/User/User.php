@@ -75,7 +75,7 @@ class User
     protected function setEmail(string $email)
     {
         $email = trim($email);
-        Assertion::email($email);
+        Assertion::email($email, sprintf('El correo %s no es valido.', $email));
         $this->email = $email;
     }
 
@@ -84,7 +84,7 @@ class User
      */
     public function setName(string $name)
     {
-        $this->name = $this->assertNameOrLastName($name);
+        $this->name = $this->assertNameOrLastName($name, 'nombre');
     }
 
     /**
@@ -92,8 +92,7 @@ class User
      */
     public function setLastName(string $lastName)
     {
-
-        $this->lastName = $this->assertNameOrLastName($lastName);
+        $this->lastName = $this->assertNameOrLastName($lastName, 'apellido');
     }
 
     /**
@@ -101,13 +100,19 @@ class User
      * @return string
      * @throws InvalidArgumentException
      */
-    private function assertNameOrLastName(string $name): string
+    private function assertNameOrLastName(string $name, string $type): string
     {
         $name = trim($name);
         Assertion::betweenLength(
             $name,
             static::MIN_LENGTH_NAME_LN,
-            static::MAX_LENGTH_NAME_LN
+            static::MAX_LENGTH_NAME_LN,
+            sprintf(
+                'El %s debe tener minimo %d y maximo %d caracteres',
+                $type,
+                static::MIN_LENGTH_NAME_LN,
+                static::MAX_LENGTH_NAME_LN
+            )
         );
 
         return $name;
@@ -121,7 +126,14 @@ class User
     public function changePassword(string $password)
     {
         $password = trim($password);
-        Assertion::minLength($password, static::MIN_LENGTH_PASSWORD);
+        Assertion::minLength(
+            $password,
+            static::MIN_LENGTH_PASSWORD,
+            sprintf(
+                'La password debe tener minimo %d caracteres.',
+                static::MIN_LENGTH_PASSWORD
+            )
+        );
         if (password_verify($password, $this->password)) {
             throw new ChangeEqualsNewPasswordException();
         }
@@ -166,6 +178,9 @@ class User
         return $this->lastName;
     }
 
+    /**
+     * @return string
+     */
     public function password(): string
     {
         return $this->password;

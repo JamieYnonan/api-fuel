@@ -1,8 +1,7 @@
 <?php
 namespace Fuel\Infrastructure\Domain\Model\User;
 
-use Fuel\Domain\Model\User\User;
-use Fuel\Domain\Model\User\UserRepositoryInterface;
+use Fuel\Domain\Model\User\{User, UserRepositoryInterface};
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -22,7 +21,7 @@ class DoctrineUserRepository extends EntityRepository implements UserRepositoryI
 
     /**
      * @param string $email
-     * @return User
+     * @return null|User
      */
     public function byEmail(string $email)
     {

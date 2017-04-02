@@ -1,9 +1,10 @@
 <?php
 namespace Fuel\Application\Service\User;
 
-use function Assert\thatNullOr;
-use Fuel\Domain\Model\User\UserRepositoryInterface;
-use Fuel\Domain\Model\User\UserUpdateWithPreviousValuesException;
+use Fuel\Domain\Model\User\{
+    UserRepositoryInterface,
+    UserUpdateWithPreviousValuesException
+};
 
 /**
  * Class UpdateUserService

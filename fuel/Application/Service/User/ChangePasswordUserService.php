@@ -2,9 +2,10 @@
 namespace Fuel\Application\Service\User;
 
 use Assert\Assertion;
-use Fuel\Domain\Model\User\OldPasswordNotEqualToAcutalException;
-use Fuel\Domain\Model\User\User;
-use Fuel\Domain\Model\User\UserRepositoryInterface;
+use Fuel\Domain\Model\User\{
+    OldPasswordNotEqualToAcutalException,
+    UserRepositoryInterface
+};
 
 /**
  * Class ChangePasswordUserService

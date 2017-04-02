@@ -2,10 +2,16 @@
 namespace Fuel\Domain\Model\User;
 
 use Fuel\Application\Service\Response\AbstractResponseException;
-use Throwable;
 
+/**
+ * Class ChangeEqualsNewPasswordException
+ * @package Fuel\Domain\Model\User
+ */
 class ChangeEqualsNewPasswordException extends AbstractResponseException
 {
+    /**
+     * ChangeEqualsNewPasswordException constructor.
+     */
     public function __construct()
     {
         parent::__construct(

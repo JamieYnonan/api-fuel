@@ -1,22 +1,25 @@
 <?php
 
 use Silex\Application;
-use Silex\Provider\AssetServiceProvider;
-use Silex\Provider\ServiceControllerServiceProvider;
-use Silex\Provider\HttpFragmentServiceProvider;
+use Silex\Provider\{
+    AssetServiceProvider,
+    ServiceControllerServiceProvider,
+    HttpFragmentServiceProvider,
+    DoctrineServiceProvider
+};
 use Symfony\Component\Yaml\Yaml;
-use Silex\Provider\DoctrineServiceProvider;
-use Silex\Provider\SessionServiceProvider;
 use Fuel\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
-use Fuel\Application\Service\User\SingUpUserService;
-use Fuel\Application\Service\User\UpdateUserService;
-use Fuel\Application\Service\User\ChangePasswordUserService;
+use Fuel\Application\Service\User\{
+    SingUpUserService,
+    UpdateUserService,
+    ChangePasswordUserService
+};
+use Fuel\Domain\Model\User\ValidationToken;
 
 $app = new Application();
 $app->register(new ServiceControllerServiceProvider());
 $app->register(new AssetServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
-$app->register(new SessionServiceProvider());
 
 $dirConfig = __DIR__ .'/../config/';
 
@@ -50,6 +53,13 @@ $app['update_user_application_service'] = function ($app) {
 
 $app['change_password_user_application_service'] = function ($app) {
     return new ChangePasswordUserService($app['user_repository']);
+};
+
+$app['validation_token'] = function ($app) {
+    return new ValidationToken(
+        $app['config']['config']['tokenKey'],
+        $app['user_repository']
+    );
 };
 
 return $app;

@@ -3,14 +3,21 @@ namespace Fuel\Application\Service\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Class ResponseGeneralException
+ * @package Fuel\Application\Service\Response
+ */
 class ResponseGeneralException
 {
-    public static function response(int $code = 400)
+    /**
+     * @return JsonResponse
+     */
+    public static function response()
     {
         return new JsonResponse(
             [
                 'message' => 'Ocurrio un problema',
-                'code' => $code
+                'code' => 400
             ],
             400
         );
