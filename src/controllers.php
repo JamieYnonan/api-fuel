@@ -25,8 +25,10 @@ $app->post('users', function (Request $request) use ($app) {
 
         return new JsonResponse($response);
     } catch (\InvalidArgumentException $e) {
+        $app['monolog']->error($e->getMessage());
         return ResponseCustomException::response($e);
     } catch (\Exception $e) {
+        $app['monolog']->error($e->getMessage());
         return ResponseGeneralException::response();
     }
 });
@@ -47,8 +49,10 @@ $app->put('users', function (Request $request) use ($app) {
 
         return new JsonResponse($response);
     } catch (\InvalidArgumentException $e) {
+        $app['monolog']->error($e->getMessage());
         return ResponseCustomException::response($e);
     } catch (\Exception $e) {
+        $app['monolog']->error($e->getMessage());
         return ResponseGeneralException::response();
     }
 });
@@ -70,12 +74,15 @@ $app->put('users/password', function (Request $request) use ($app) {
 
         return new JsonResponse($response);
     } catch (\InvalidArgumentException $e) {
+        $app['monolog']->error($e->getMessage());
         return ResponseCustomException::response($e);
     } catch (\Exception $e) {
+        $app['monolog']->error($e->getMessage());
         return ResponseGeneralException::response();
     }
 });
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
+    $app['monolog']->critical($e->getMessage());
     return ResponseGeneralException::response($code);
 });

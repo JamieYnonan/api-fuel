@@ -5,7 +5,8 @@ use Silex\Provider\{
     AssetServiceProvider,
     ServiceControllerServiceProvider,
     HttpFragmentServiceProvider,
-    DoctrineServiceProvider
+    DoctrineServiceProvider,
+    MonologServiceProvider
 };
 use Symfony\Component\Yaml\Yaml;
 use Fuel\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
@@ -22,11 +23,16 @@ $app->register(new AssetServiceProvider());
 $app->register(new HttpFragmentServiceProvider());
 
 $dirConfig = __DIR__ .'/../config/';
+$monologConfig = Yaml::parse(file_get_contents($dirConfig . 'monolog.yml'));
 
 $app->register(
     new DoctrineServiceProvider(),
     Yaml::parse(file_get_contents($dirConfig . 'database.yml'))
 );
+
+$app->register(new MonologServiceProvider(), array(
+    'monolog.logfile' => $monologConfig['monolog']['logfile'],
+));
 
 $app['config'] = function () use ($dirConfig) {
     return Yaml::parse(file_get_contents($dirConfig . 'config.yml'));
