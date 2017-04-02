@@ -8,11 +8,13 @@ use Fuel\Application\Service\Response\{
 use Fuel\Application\Service\User\{
     SingUpUserRequest,
     UpdateUserRequest,
-    ChangePasswordUserRequest
+    ChangePasswordUserRequest,
+    LogInUserRequest,
+    UserRequest
 };
 
 
-$app->post('users', function (Request $request) use ($app) {
+$app->post('/users', function (Request $request) use ($app) {
     try {
         $response = $app['sign_up_user_application_service']->execute(
             new SingUpUserRequest(
@@ -33,7 +35,7 @@ $app->post('users', function (Request $request) use ($app) {
     }
 });
 
-$app->put('users', function (Request $request) use ($app) {
+$app->put('/users/{id}', function (Request $request, int $id) use ($app) {
     try {
         $data = $app['validation_token']->validate(
             $request->headers->get('token')
@@ -41,7 +43,7 @@ $app->put('users', function (Request $request) use ($app) {
 
         $response = $app['update_user_application_service']->execute(
             new UpdateUserRequest(
-                $data->id,
+                $id,
                 $request->get('name'),
                 $request->get('last_name')
             )
@@ -57,7 +59,25 @@ $app->put('users', function (Request $request) use ($app) {
     }
 });
 
-$app->put('users/password', function (Request $request) use ($app) {
+$app->get('/users/{id}', function (Request $request, int $id) use ($app) {
+    try {
+        $data = $app['validation_token']->validate(
+            $request->headers->get('token')
+        );
+
+        $response = $app['user_application_service']->execute(new UserRequest($id));
+
+        return new JsonResponse($response);
+    } catch (\InvalidArgumentException $e) {
+        $app['monolog']->error($e->getMessage());
+        return ResponseCustomException::response($e);
+    } catch (\Exception $e) {
+        $app['monolog']->error($e->getMessage());
+        return ResponseGeneralException::response();
+    }
+});
+
+$app->put('/users/password', function (Request $request) use ($app) {
     try {
         $data = $app['validation_token']->validate(
             $request->headers->get('token')
@@ -69,6 +89,25 @@ $app->put('users/password', function (Request $request) use ($app) {
                 $request->get('old_password'),
                 $request->get('new_password'),
                 $request->get('repeat_password')
+            )
+        );
+
+        return new JsonResponse($response);
+    } catch (\InvalidArgumentException $e) {
+        $app['monolog']->error($e->getMessage());
+        return ResponseCustomException::response($e);
+    } catch (\Exception $e) {
+        $app['monolog']->error($e->getMessage());
+        return ResponseGeneralException::response();
+    }
+});
+
+$app->post('/login', function (Request $request) use ($app) {
+    try {
+        $response = $app['log_in_user_application_service']->execute(
+            new LogInUserRequest(
+                $request->get('email'),
+                $request->get('password')
             )
         );
 

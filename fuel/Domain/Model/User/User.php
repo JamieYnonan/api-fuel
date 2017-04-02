@@ -143,7 +143,7 @@ class User
 
     public function equalPassword(string $password): bool
     {
-        return password_verify($password, $this->password());
+        return password_verify($password, $this->password);
     }
 
     /**
@@ -179,10 +179,20 @@ class User
     }
 
     /**
+     * @param string $format default 'Y-m-d H:i:s'
      * @return string
      */
-    public function password(): string
+    public function updatedAt($format = 'Y-m-d H:i:s'): string
     {
-        return $this->password;
+        return $this->updatedAt->format($format);
+    }
+
+    /**
+     * @param string $format default 'Y-m-d H:i:s'
+     * @return string
+     */
+    public function createdAt($format = 'Y-m-d H:i:s'): string
+    {
+        return $this->createdAt->format($format);
     }
 }

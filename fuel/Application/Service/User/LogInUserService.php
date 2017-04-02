@@ -1,10 +1,10 @@
 <?php
 namespace Fuel\Application\Service\User;
 
-use Fuel\Domain\Model\User\{User, UserAlreadyExistsException, UserRepositoryInterface};
+use Fuel\Domain\Model\User\{InvalidLogInException, UserRepositoryInterface};
 use Firebase\JWT\JWT;
 
-class SingUpUserService
+class LogInUserService
 {
     /**
      * @var UserRepositoryInterface
@@ -17,7 +17,7 @@ class SingUpUserService
     private $tokenKey;
 
     /**
-     * SingUpUserService constructor.
+     * LogInUserService constructor.
      * @param UserRepositoryInterface $userRepository
      * @param string $tokenKey
      */
@@ -30,27 +30,22 @@ class SingUpUserService
     }
 
     /**
-     * @param SingUpUserRequest $request
+     * @param LogInUserRequest $request
      * @return array
      */
-    public function execute(SingUpUserRequest $request): array
+    public function execute(LogInUserRequest $request): array
     {
         $user = $this->userRepository->byEmail($request->email());
-        if ($user !== null) {
-            throw new UserAlreadyExistsException($request->email());
+        if ($user === null) {
+            throw new InvalidLogInException();
         }
 
-        $user = new User(
-            $request->email(),
-            $request->name(),
-            $request->lastName(),
-            $request->password()
-        );
-
-        $this->userRepository->add($user);
+        if ($user->equalPassword($request->password()) === false) {
+            throw new InvalidLogInException();
+        }
 
         return [
-            'message' => 'El usuario se registró correctamente.',
+            'message' => 'El usuario se logueó correctamente.',
             'id' => $user->id(),
             'token' => JWT::encode(
                 [

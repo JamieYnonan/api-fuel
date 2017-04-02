@@ -12,8 +12,10 @@ use Symfony\Component\Yaml\Yaml;
 use Fuel\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
 use Fuel\Application\Service\User\{
     SingUpUserService,
+    LogInUserService,
     UpdateUserService,
-    ChangePasswordUserService
+    ChangePasswordUserService,
+    UserService
 };
 use Fuel\Domain\Model\User\ValidationToken;
 
@@ -59,6 +61,17 @@ $app['update_user_application_service'] = function ($app) {
 
 $app['change_password_user_application_service'] = function ($app) {
     return new ChangePasswordUserService($app['user_repository']);
+};
+
+$app['log_in_user_application_service'] = function ($app) {
+    return new LogInUserService(
+        $app['user_repository'],
+        $app['config']['config']['tokenKey']
+    );
+};
+
+$app['user_application_service'] = function ($app) {
+    return new UserService($app['user_repository']);
 };
 
 $app['validation_token'] = function ($app) {
