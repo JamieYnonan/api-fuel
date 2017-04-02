@@ -2,3 +2,4 @@
 /.idea/
 /var/cache/*
 /var/logs/*
+/config/*

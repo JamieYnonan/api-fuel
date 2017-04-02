@@ -1,7 +1,0 @@
-db.options:
-  driver: 'pdo_mysql'
-  host: 'mysql57'
-  dbname: 'fuel'
-  user: 'root'
-  password: '123456'
-  charset: 'utf8'
