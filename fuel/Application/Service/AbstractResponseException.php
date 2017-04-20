@@ -1,9 +1,9 @@
 <?php
-namespace Fuel\Application\Service\Response;
+namespace Fuel\Application\Service;
 
 /**
  * Class AbstractResponseException
- * @package Fuel\Application\Service\Response
+ * @package Fuel\Application\Service
  */
 class AbstractResponseException extends \InvalidArgumentException
 {

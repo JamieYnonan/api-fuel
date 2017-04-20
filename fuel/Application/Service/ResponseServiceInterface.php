@@ -1,9 +1,9 @@
 <?php
-namespace Fuel\Application\Service\Response;
+namespace Fuel\Application\Service;
 
 /**
  * Interface ResponseServiceInterface
- * @package Fuel\Application\Service\Response
+ * @package Fuel\Application\Service
  */
 interface ResponseServiceInterface
 {

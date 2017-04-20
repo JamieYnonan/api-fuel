@@ -1,7 +1,7 @@
 <?php
 namespace Fuel\Domain\Model\User;
 
-use Fuel\Application\Service\Response\AbstractResponseException;
+use Fuel\Application\Service\AbstractResponseException;
 
 /**
  * Class UserAlreadyExistsException
@@ -14,6 +14,9 @@ class OldPasswordNotEqualToAcutalException extends AbstractResponseException
      */
     public function __construct()
     {
-        parent::__construct('La contraseña ingresada no coincide con la actual.', 140);
+        parent::__construct(
+            'La contraseña ingresada no coincide con la actual.',
+            340
+        );
     }
 }

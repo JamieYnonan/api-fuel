@@ -44,14 +44,17 @@ class LogInUserService
             throw new InvalidLogInException();
         }
 
+        $now = new \DateTime;
+
         return [
-            'message' => 'El usuario se logueó correctamente.',
+            'message' => 'El usuario inicio sesión correctamente.',
             'id' => $user->id(),
             'token' => JWT::encode(
                 [
-                    'iat' => time(),
+                    'iat' => $now->getTimestamp(),
+                    'exp' => $now->modify('+1 moth')->getTimestamp(),
                     'jti' => base64_encode(random_bytes(32)),
-                    'id' => $user->id()
+                    'user_id' => $user->id()
                 ],
                 $this->tokenKey
             )

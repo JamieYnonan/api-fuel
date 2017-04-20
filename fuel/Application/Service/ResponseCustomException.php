@@ -1,11 +1,11 @@
 <?php
-namespace Fuel\Application\Service\Response;
+namespace Fuel\Application\Service;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Class ResponseCustomException
- * @package Fuel\Application\Service\Response
+ * @package Fuel\Application\Service
  */
 class ResponseCustomException
 {

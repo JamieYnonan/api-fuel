@@ -1,7 +1,7 @@
 <?php
 namespace Fuel\Domain\Model\User;
 
-use Fuel\Application\Service\Response\AbstractResponseException;
+use Fuel\Application\Service\AbstractResponseException;
 
 /**
  * Class InvalidLogInException
@@ -14,9 +14,6 @@ class InvalidLogInException extends AbstractResponseException
      */
     public function __construct()
     {
-        parent::__construct(
-            'El email o password no son correctos.',
-            160
-        );
+        parent::__construct('El email o password no son correctos.', 360);
     }
 }

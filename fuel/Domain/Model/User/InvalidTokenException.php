@@ -1,7 +1,7 @@
 <?php
 namespace Fuel\Domain\Model\User;
 
-use Fuel\Application\Service\Response\AbstractResponseException;
+use Fuel\Application\Service\AbstractResponseException;
 
 /**
  * Class InvalidTokenException
@@ -14,9 +14,6 @@ class InvalidTokenException extends AbstractResponseException
      */
     public function __construct()
     {
-        parent::__construct(
-            'El token es invalido.',
-            150
-        );
+        parent::__construct('El token es invalido.', 350);
     }
 }

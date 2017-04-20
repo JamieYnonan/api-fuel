@@ -1,7 +1,7 @@
 <?php
 namespace Fuel\Domain\Model\User;
 
-use Fuel\Application\Service\Response\AbstractResponseException;
+use Fuel\Application\Service\AbstractResponseException;
 
 /**
  * Class UserAlreadyExistsException
@@ -17,7 +17,7 @@ class UserAlreadyExistsException extends AbstractResponseException
     {
         parent::__construct(
             sprintf('El correo %s ya se encuentra registrado.', $email),
-            110
+            310
         );
     }
 }

@@ -1,7 +1,7 @@
 <?php
 namespace Fuel\Domain\Model\User;
 
-use Fuel\Application\Service\Response\AbstractResponseException;
+use Fuel\Application\Service\AbstractResponseException;
 
 /**
  * Class UserUpdateWithPreviousValuesException
@@ -16,7 +16,7 @@ class UserUpdateWithPreviousValuesException extends AbstractResponseException
     {
         parent::__construct(
             sprintf('Los datos a actualizar son los mismo que los actuales.'),
-            120
+            320
         );
     }
 }
