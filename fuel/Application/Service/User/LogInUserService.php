@@ -2,7 +2,6 @@
 namespace Fuel\Application\Service\User;
 
 use Fuel\Domain\Model\User\{InvalidLogInException, UserRepositoryInterface};
-use Firebase\JWT\JWT;
 
 class LogInUserService
 {
@@ -11,22 +10,19 @@ class LogInUserService
      */
     private $userRepository;
 
-    /**
-     * @var string
-     */
-    private $tokenKey;
+    private $jwtToken;
 
     /**
      * LogInUserService constructor.
      * @param UserRepositoryInterface $userRepository
-     * @param string $tokenKey
+     * @param $jwtToken
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
-        string $tokenKey
+        $jwtToken
     ) {
         $this->userRepository = $userRepository;
-        $this->tokenKey = $tokenKey;
+        $this->jwtToken = $jwtToken;
     }
 
     /**
@@ -44,20 +40,13 @@ class LogInUserService
             throw new InvalidLogInException();
         }
 
-        $now = new \DateTime;
-
         return [
             'message' => 'El usuario inicio sesión correctamente.',
-            'id' => $user->id(),
-            'token' => JWT::encode(
-                [
-                    'iat' => $now->getTimestamp(),
-                    'exp' => $now->modify('+1 moth')->getTimestamp(),
-                    'jti' => base64_encode(random_bytes(32)),
-                    'user_id' => $user->id()
-                ],
-                $this->tokenKey
-            )
+            'code' => 0,
+            'data' => [
+                'id' => $user->id(),
+                'token' => $this->jwtToken->encode(['id' => $user->id()])
+            ]
         ];
     }
 }

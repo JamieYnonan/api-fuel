@@ -18,7 +18,8 @@ class ResponseCustomException
         return new JsonResponse(
             [
                 'message' => $exception->getMessage(),
-                'code' => $exception->getCode()
+                'code' => $exception->getCode(),
+                'data' => []
             ],
             400
         );

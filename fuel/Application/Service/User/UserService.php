@@ -37,12 +37,15 @@ class UserService
 
         return [
             'message' => 'Datos del usuario.',
-            'id' => $user->id(),
-            'email' => $user->email(),
-            'name' => $user->name(),
-            'last_name' => $user->lastName(),
-            'updated_at' => $user->updatedAt(),
-            'created_at' => $user->createdAt()
+            'code' => 0,
+            'data' => [
+                'id' => $user->id(),
+                'email' => $user->email(),
+                'name' => $user->name(),
+                'last_name' => $user->lastName(),
+                'updated_at' => $user->updatedAt(),
+                'created_at' => $user->createdAt()
+            ]
         ];
     }
 }

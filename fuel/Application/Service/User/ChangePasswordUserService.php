@@ -45,6 +45,10 @@ class ChangePasswordUserService
 
         $this->userRepository->update($user);
 
-        return ['La contraseña se cambio correctamente!'];
+        return [
+            'message' => 'La contraseña se cambio correctamente!',
+            'code' => 0,
+            'data' => []
+        ];
     }
 }

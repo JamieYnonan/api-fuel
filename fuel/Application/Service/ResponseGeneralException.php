@@ -17,7 +17,8 @@ class ResponseGeneralException
         return new JsonResponse(
             [
                 'message' => 'Ocurrio un problema',
-                'code' => 400
+                'code' => 400,
+                'data' => []
             ],
             400
         );

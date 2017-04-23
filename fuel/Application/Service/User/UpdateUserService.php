@@ -44,6 +44,17 @@ class UpdateUserService
 
         $this->userRepository->update($user);
 
-        return ['message' => 'Los datos fueron actualizados.'];
+        return [
+            'message' => 'Los datos fueron actualizados.',
+            'code' => 0,
+            'data' => [
+                'id' => $user->id(),
+                'email' => $user->email(),
+                'name' => $user->name(),
+                'last_name' => $user->lastName(),
+                'updated_at' => $user->updatedAt(),
+                'created_at' => $user->createdAt()
+            ]
+        ];
     }
 }

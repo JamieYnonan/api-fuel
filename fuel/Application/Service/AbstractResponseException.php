@@ -12,6 +12,10 @@ class AbstractResponseException extends \InvalidArgumentException
      */
     public function __invoke()
     {
-        return ['message' => $this->getMessage(), 'code' => $this->getCode()];
+        return [
+            'message' => $this->getMessage(),
+            'code' => $this->getCode(),
+            'data' => []
+        ];
     }
 }

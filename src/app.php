@@ -10,6 +10,7 @@ use Silex\Provider\{
 };
 use Symfony\Component\Yaml\Yaml;
 use Fuel\Infrastructure\Persistence\Doctrine\EntityManagerFactory;
+use Fuel\Infrastructure\Token\Token;
 use Fuel\Application\Service\User\{
     SingUpUserService,
     LogInUserService,
@@ -17,7 +18,6 @@ use Fuel\Application\Service\User\{
     ChangePasswordUserService,
     UserService
 };
-use Fuel\Domain\Model\User\ValidationToken;
 
 $app = new Application();
 $app->register(new ServiceControllerServiceProvider());
@@ -51,7 +51,7 @@ $app['user_repository'] = function ($app) {
 $app['sign_up_user_application_service'] = function ($app) {
     return new SingUpUserService(
         $app['user_repository'],
-        $app['config']['config']['tokenKey']
+        $app['jwt_token']
     );
 };
 
@@ -66,7 +66,7 @@ $app['change_password_user_application_service'] = function ($app) {
 $app['log_in_user_application_service'] = function ($app) {
     return new LogInUserService(
         $app['user_repository'],
-        $app['config']['config']['tokenKey']
+        $app['jwt_token']
     );
 };
 
@@ -74,11 +74,8 @@ $app['user_application_service'] = function ($app) {
     return new UserService($app['user_repository']);
 };
 
-$app['validation_token'] = function ($app) {
-    return new ValidationToken(
-        $app['config']['config']['tokenKey'],
-        $app['user_repository']
-    );
+$app['jwt_token'] = function ($app) {
+    return new Token($app['config']['config']['token']);
 };
 
 return $app;
