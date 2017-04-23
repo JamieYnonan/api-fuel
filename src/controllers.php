@@ -14,6 +14,13 @@ use Fuel\Application\Service\User\{
     UserRequest
 };
 
+$app->before(function (Request $request) {
+    if (0 === strpos($request->headers->get('Content-Type'), 'application/json')) {
+        $data = json_decode($request->getContent(), true);
+        $request->request->replace(is_array($data) ? $data : []);
+    }
+});
+
 $app->post('/users', function (Request $request) use ($app) {
     try {
         $response = $app['sign_up_user_application_service']->execute(
